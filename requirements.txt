@@ -21,7 +21,6 @@ uvicorn
 python-multipart
 python-dotenv
 litellm
-os 
 datetime
 pymupdf 
 typing 
