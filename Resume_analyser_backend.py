@@ -3,6 +3,13 @@ from fastapi import FastAPI, UploadFile, File, Form
 import tempfile
 import os 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],       # Allows requests from your Lovable frontend and localhost
+    allow_credentials=False,   # Keep False when allow_origins is "*"
+    allow_methods=["*"],       # Allows GET, POST, OPTIONS, etc.
+    allow_headers=["*"],       # Allows all headers (Content-Type, etc.)
+)
 @app.post("/uploadResume")
 async def uploadResume(
     file: UploadFile = File(...),
