@@ -1,4 +1,5 @@
 from Resume_Analyzer_Genai_APP import Pipeline
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, UploadFile, File, Form
 import tempfile
 import os 
