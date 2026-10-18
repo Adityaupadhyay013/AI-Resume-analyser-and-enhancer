@@ -903,7 +903,7 @@ def Text_extraction(pdf_bytes: bytes) -> str:
     return text
 
 def _execute_pipeline(data: dict):
-    resume_text = Text_extraction(data["file_path"])
+    resume_text = Text_extraction(data["pdf_bytes"])
     if not resume_text:
         raise ValueError("Could not extract sufficient text from the resume PDF.")
     target_jd = data["target_job_description"]
