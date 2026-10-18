@@ -897,26 +897,13 @@ Produce the strongest truthful, ATS-optimized, recruiter-friendly version of the
   response = client.chat.completions.create(model = "qwen3.7-plus" , messages = [{"role":"user" , "content":Resume_writing_temp}] , temperature = 1)
   response = response.choices[0].message.content
   return response
-def Text_extraction(file_path):
-    doc = pymupdf.open(file_path)
-    text = ""
-    for page in doc:
-        text += page.get_text()
-
-    sections = ["projects" , "skills" , "education" , "summary" , "experience"]
-    word_count = re.findall(r"\b\w+\b" , text)
-    Lower = text.lower()              # Does not do inplace lower case conversion.
-    matched = 0
-    for s in sections: 
-        if s in Lower:
-            matched += 1
-    doc.close()
-    if len(text.strip()) > 100 and matched >= 2 and len(word_count) > 40:
-        return text 
-    return False
+def Text_extraction(pdf_bytes: bytes) -> str:
+    with pymupdf.open(stream = pdf_bytes ,filetype = "pdf") as doc:
+        text = "".join(page.get_text("text", sort=True) for page in doc)
+    return text
 
 def _execute_pipeline(data: dict):
-    resume_text = Text_extraction(data["file_path"])
+    resume_text = Text_extraction(data["pdf_bytes"])
     if not resume_text:
         raise ValueError("Could not extract sufficient text from the resume PDF.")
     target_jd = data["target_job_description"]
